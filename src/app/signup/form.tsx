@@ -1,89 +1,61 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { SignUpFormSchemaType, signUpFormSchema } from "@/lib";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as React from "react";
-import { useForm } from "react-hook-form";
 
+import { signup } from "./actions";
+import { useFormState } from "react-dom";
+//import { useActionState } from "react";
+//👆🏻 You can use the useFormState hook from the react-dom package as a temporary solution instead of the useActionState hook from the react package until a future Next.js update is available
+
+const initialState = {
+  errors: {
+    name: "",
+    email: "",
+    password: "",
+  },
+};
 export function SignUpForm() {
-  const form = useForm<SignUpFormSchemaType>({
-    resolver: zodResolver(signUpFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: SignUpFormSchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const [state, action, pending] = useFormState(signup, null);
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
-      >
-        <FormField
-          control={form.control}
+    <form
+      action={action}
+      className=" flex flex-col justify-center gap-4 w-full"
+    >
+      <div className="flex flex-col gap-1">
+        <input
+          placeholder="Name"
           name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          className="w-full py-2 rounded-sm"
         />
-        <FormField
-          control={form.control}
+        {state?.errors?.name && (
+          <p className="text-red-600">{state.errors.name}</p>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <input
+          placeholder="Email"
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          className=" py-2 rounded-sm"
         />
-        <FormField
-          control={form.control}
+        {state?.errors?.email && (
+          <p className="text-red-600">{state.errors.email}</p>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <input
+          placeholder="Password"
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          className=" py-2 rounded-sm"
         />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+        {state?.errors?.password && (
+          <p className="text-red-600">{state.errors.password}</p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        className="my-5 border border-emerald-50  py-5 rounded-md"
+      >
+        {pending ? "Submiting..." : "Sign Up"}
+      </button>
+    </form>
   );
 }
