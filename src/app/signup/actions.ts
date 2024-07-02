@@ -1,6 +1,6 @@
 "use server";
 
-import { signUpFormSchema } from "@/lib";
+import { createSession, signUpFormSchema } from "@/lib";
 import { prisma } from "@/lib";
 import bcrypt from "bcrypt";
 
@@ -31,7 +31,6 @@ export async function signup(prevState: any, formData: FormData) {
     },
   });
 
-  return newUser;
-
+  await createSession(newUser.id);
   //3- Return the user
 }
