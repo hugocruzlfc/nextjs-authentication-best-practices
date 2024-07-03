@@ -2,6 +2,7 @@
 
 import { createSession, signUpFormSchema } from "@/lib";
 import { prisma } from "@/lib";
+import { Role } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 export async function signup(prevState: any, formData: FormData) {
@@ -28,9 +29,13 @@ export async function signup(prevState: any, formData: FormData) {
       name,
       email,
       password: hashPassword,
+      role: applyRole(email),
     },
   });
 
-  await createSession(newUser.id);
-  //3- Return the user
+  await createSession(newUser);
+}
+
+function applyRole(email: string) {
+  return email === "hugocruz@gmail.com" ? Role.ADMIN : Role.USER;
 }

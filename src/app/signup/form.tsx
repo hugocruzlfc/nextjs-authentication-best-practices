@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "./actions";
+import { signup } from "../../actions/signup";
 import { useFormState } from "react-dom";
 //import { useActionState } from "react";
 //👆🏻 You can use the useFormState hook from the react-dom package as a temporary solution instead of the useActionState hook from the react package until a future Next.js update is available
@@ -23,7 +23,7 @@ export function SignUpForm() {
         <input
           placeholder="Name"
           name="name"
-          className="w-full py-2 rounded-sm px-2"
+          className="w-full py-2 rounded-sm px-2 text-slate-400"
         />
         {state?.errors?.name && (
           <p className="text-red-600">{state.errors.name}</p>
@@ -33,7 +33,7 @@ export function SignUpForm() {
         <input
           placeholder="Email"
           name="email"
-          className=" py-2 rounded-sm px-2"
+          className=" py-2 rounded-sm px-2 text-slate-400"
         />
         {state?.errors?.email && (
           <p className="text-red-600">{state.errors.email}</p>
@@ -43,7 +43,8 @@ export function SignUpForm() {
         <input
           placeholder="Password"
           name="password"
-          className=" py-2 rounded-sm px-2"
+          type="password"
+          className=" py-2 rounded-sm px-2 text-slate-400"
         />
         {state?.errors?.password && (
           <p className="text-red-600">{state.errors.password}</p>

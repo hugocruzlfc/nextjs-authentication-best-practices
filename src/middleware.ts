@@ -16,6 +16,8 @@ export default async function middleware(req: NextRequest) {
     //3- Redirect if not authenticated
     const resolvedSession = await session;
 
+    console.log(resolvedSession);
+
     if (!resolvedSession?.userId) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
     }

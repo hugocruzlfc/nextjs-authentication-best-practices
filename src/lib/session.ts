@@ -3,6 +3,7 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { User } from "@prisma/client";
 
 const key = new TextEncoder().encode(process.env.SESSION_SECRET);
 
@@ -37,9 +38,9 @@ export async function decrypt(session: string) {
   }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(user: User) {
   const expires = new Date(Date.now() + COOKIE.duration);
-  const session = await encrypt({ userId, expires });
+  const session = await encrypt({ userId: user.id, role: user.role, expires });
 
   cookies().set(COOKIE.name, session, {
     ...COOKIE.options,
@@ -58,7 +59,7 @@ export async function verifySession() {
     redirect("/login");
   }
 
-  return { userId: session.userId };
+  return { userId: session.userId, role: session.role };
 }
 
 export async function deleteSession() {
