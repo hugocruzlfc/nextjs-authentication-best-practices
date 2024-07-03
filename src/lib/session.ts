@@ -1,5 +1,5 @@
 import "server-only";
-import { SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -17,7 +17,7 @@ const COOKIE = {
   duration: 24 * 60 * 60 * 1000,
 };
 
-export async function encrypt(payload: any) {
+export async function encrypt(payload: JWTPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -25,7 +25,7 @@ export async function encrypt(payload: any) {
     .sign(key);
 }
 
-export async function decrypt(session: any) {
+export async function decrypt(session: string) {
   try {
     const { payload } = await jwtVerify(session, key, {
       algorithms: ["HS256"],
@@ -51,7 +51,7 @@ export async function createSession(userId: string) {
 }
 
 export async function verifySession() {
-  const cookie = cookies().get(COOKIE.name)?.value;
+  const cookie = cookies().get(COOKIE.name)?.value || "";
   const session = await decrypt(cookie);
 
   if (!session?.userId) {

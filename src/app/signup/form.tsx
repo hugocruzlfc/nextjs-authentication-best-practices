@@ -23,7 +23,7 @@ export function SignUpForm() {
         <input
           placeholder="Name"
           name="name"
-          className="w-full py-2 rounded-sm"
+          className="w-full py-2 rounded-sm px-2"
         />
         {state?.errors?.name && (
           <p className="text-red-600">{state.errors.name}</p>
@@ -33,7 +33,7 @@ export function SignUpForm() {
         <input
           placeholder="Email"
           name="email"
-          className=" py-2 rounded-sm"
+          className=" py-2 rounded-sm px-2"
         />
         {state?.errors?.email && (
           <p className="text-red-600">{state.errors.email}</p>
@@ -43,7 +43,7 @@ export function SignUpForm() {
         <input
           placeholder="Password"
           name="password"
-          className=" py-2 rounded-sm"
+          className=" py-2 rounded-sm px-2"
         />
         {state?.errors?.password && (
           <p className="text-red-600">{state.errors.password}</p>
